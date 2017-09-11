@@ -1,0 +1,10 @@
+logs
+*.log
+.DS_Store
+pids
+*.pid
+*.seed
+coverage
+node_modules
+.eslintcache
+.esm-cache

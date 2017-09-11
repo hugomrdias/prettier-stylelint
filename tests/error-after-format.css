@@ -1,0 +1,13 @@
+@media print {
+    a {
+    color: #ffffff;
+    background-position: top left,
+    top right;
+    }
+    }
+
+
+
+
+    a[id="foo"] { content: "x"; }
+    a { color: #fff1az; }
