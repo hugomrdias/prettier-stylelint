@@ -1,6 +1,6 @@
 {
     "name": "prettier-stylelint",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "main": "index.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
     "license": "MIT",
