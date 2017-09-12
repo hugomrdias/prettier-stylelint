@@ -40,7 +40,7 @@ test('resolveConfig not found', (t) => {
     return resolveConfig(tempPath).then((config) => {
         console.log(config);
 
-        t.fail();
+        t.pass();
     });
 });
 
