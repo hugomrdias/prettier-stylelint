@@ -1,63 +1,63 @@
-import fs from 'fs';
-import path from 'path';
-import cosmiconfig from 'cosmiconfig';
-import prettier from 'prettier';
-import stylelint from 'stylelint';
-import tempWrite from 'temp-write';
+/* eslint-disable import/unambiguous */
+
+const fs = require('fs');
+const path = require('path');
+const prettier = require('prettier');
+const tempWrite = require('temp-write');
+const stylelint = require('stylelint');
+const cosmiconfig = require('cosmiconfig');
 
 const explorer = cosmiconfig('stylelint');
-const prettierDefaultConfig = {
-    printWidth: 80,
-    tabWidth: 2,
-    singleQuote: false,
-    trailingComma: 'none',
-    bracketSpacing: true,
-    semi: true,
-    useTabs: false,
-    parser: 'postcss',
-    jsxBracketSameLine: false
-};
 
 /**
  * Resolve Config for the given file
  *
  * @export
  * @param {string} file - filepath
- * @param {Object} stylelintConfig - stylelint config
+ * @param {Object} options - options
  * @returns {Promise} -
  */
-export function resolveConfig(file, stylelintConfig) {
-    function resolve(config) {
-        const prettier = {};
-        const { rules } = config;
+function resolveConfig(file, options = {}) {
+    const resolve = resolveConfig.resolve;
 
-        if (rules['string-quotes'] && rules['string-quotes'] === 'single') {
-            prettier.singleQuote = true;
-        }
-
-        if (rules.indentation) {
-            const indentation = Array.isArray(rules.indentation) ?
-                rules.indentation[0] :
-                rules.indentation;
-
-            if (indentation === 'tab') {
-                prettier.useTabs = true;
-                prettier.tabWidth = 2;
-            } else {
-                prettier.useTabs = false;
-                prettier.tabWidth = indentation;
-            }
-        }
-
-        return [Object.assign({}, prettierDefaultConfig, prettier), config];
+    if (options.stylelintConfig) {
+        return Promise.resolve(resolve(options.stylelintConfig));
     }
 
-    if (file) {
-        return explorer.load(file).then(({ config }) => resolve(config));
-    }
-
-    return Promise.resolve(resolve(stylelintConfig));
+    return explorer.load(file).then(({ config }) => resolve(config));
 }
+
+resolveConfig.resolve = (stylelintConfig) => {
+    const prettierConfig = {};
+    const { rules } = stylelintConfig;
+
+    if (rules['string-quotes']) {
+        const quotes = Array.isArray(rules['string-quotes']) ?
+            rules['string-quotes'][0] :
+            rules['string-quotes'];
+
+        if (quotes === 'single') {
+            prettierConfig.singleQuote = true;
+        }
+    }
+
+    if (rules.indentation) {
+        const indentation = Array.isArray(rules.indentation) ?
+            rules.indentation[0] :
+            rules.indentation;
+
+        if (indentation === 'tab') {
+            prettierConfig.useTabs = true;
+            prettierConfig.tabWidth = 2;
+        } else {
+            prettierConfig.useTabs = false;
+            prettierConfig.tabWidth = indentation;
+        }
+    }
+    prettierConfig.parser = 'postcss';
+
+    return [prettierConfig, stylelintConfig];
+};
 
 function stylelinter(originalPath, filepath, config) {
     return stylelint
@@ -81,7 +81,7 @@ function stylelinter(originalPath, filepath, config) {
         });
 }
 
-export function format(options) {
+function format(options) {
     const { filePath, text, stylelintConfig } = options;
 
     if (!filePath && !stylelintConfig) {
@@ -90,10 +90,16 @@ export function format(options) {
 
     return resolveConfig(
         filePath,
-        stylelintConfig
+        options
     ).then(([prettierConfig, stylelintConfig]) => {
-        const tempPath = tempWrite.sync(prettier.format(text, prettierConfig));
+        const tempPath = tempWrite.sync(
+            prettier.format(text, prettierConfig),
+            'fix-stylelint' + path.extname(filePath)
+        );
 
         return stylelinter(filePath, tempPath, stylelintConfig);
     });
 }
+
+exports.format = format;
+exports.resolveConfig = resolveConfig;
