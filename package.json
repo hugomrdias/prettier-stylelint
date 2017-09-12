@@ -4,9 +4,21 @@
     "main": "index.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
     "license": "MIT",
+    "keywords": [
+        "stylelint",
+        "prettier",
+        "style",
+        "lint",
+        "linter",
+        "validate",
+        "code style",
+        "strict",
+        "check"
+    ],
     "devDependencies": {
         "ava": "^0.22.0",
-        "eslint-config-halo": "^2.3.3"
+        "eslint-config-halo": "^2.3.3",
+        "np": "^2.16.0"
     },
     "eslintConfig": {
         "extends": "halo/plugins"
