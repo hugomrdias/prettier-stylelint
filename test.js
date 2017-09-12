@@ -37,11 +37,16 @@ test('resolveConfig not found', (t) => {
         'test.css'
     );
 
-    return resolveConfig(tempPath).then((config) => {
-        console.log(config);
+    return resolveConfig(tempPath)
+        .then((config) => {
+            console.log(config);
 
-        t.fail();
-    });
+            return config;
+        })
+        .catch((err) => {
+            console.log(err);
+            t.pass();
+        });
 });
 
 test('format', (t) => {
