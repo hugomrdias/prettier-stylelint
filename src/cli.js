@@ -19,9 +19,8 @@ Examples
   $ prettier-stylelint index.js
   $ prettier-stylelint *.js !foo.js
   $ prettier-stylelint --space
-  $ echo 'const x=true' | prettier-stylelint --stdin --fix
-Tips
-  Put options in package.json instead of using flags so other tools can read it.
+  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint --stdin
+  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint -
 `,
     {
         string: ['_'],
@@ -29,14 +28,13 @@ Tips
         default: {
             // -semicolon: true,
             esnext: true
-        },
-        alias: { 'stdin-filename': 'filename' }
+        }
     }
 );
 let input = cli.input;
 const opts = cli.flags;
 
-const DEFAULT_EXTENSION = ['css', 'scss'];
+const DEFAULT_EXTENSION = ['css', 'scss', 'less', 'sss'];
 const DEFAULT_PATTERN = `**/*.{${DEFAULT_EXTENSION.join(',')}}`;
 const DEFAULT_IGNORE = [
     '**/node_modules/**',
@@ -44,9 +42,9 @@ const DEFAULT_IGNORE = [
     'flow-typed/**',
     'coverage/**',
     '{tmp,temp}/**',
-    '**/*.min.js',
-    '**/bundle.js',
-    'fixture{-*,}.{js,jsx}',
+    '**/*.min.{css,scss,less,sss}',
+    '**/bundle.{css,scss,less,sss}',
+    'fixture{-*,}.{css,scss,less,sss}',
     'fixture{s,}/**',
     '{test,tests,spec,__tests__}/fixture{s,}/**',
     'vendor/**',
@@ -94,7 +92,7 @@ if (opts.stdin) {
                 paths.map(path =>
                     format({
                         text: fs.readFileSync(path, 'utf8'),
-                        filePath: process.cwd()
+                        filePath: path
                     }).then((formatted) => {
                         console.log(path + ' \n');
                         console.log(formatted);
