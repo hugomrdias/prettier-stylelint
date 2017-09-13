@@ -1,6 +1,6 @@
 {
     "name": "prettier-stylelint",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "main": "index.js",
     "bin": "./cli.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
@@ -52,7 +52,9 @@
             "indentation": [
                 4,
                 {
-                    "except": ["value"]
+                    "except": [
+                        "value"
+                    ]
                 }
             ]
         }
