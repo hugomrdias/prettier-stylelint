@@ -9,8 +9,9 @@ prettier-eslint for stylelint :)
 
 ## Install
 
-```
-$ yarn add prettier-stylelint --dev
+```bash
+yarn add prettier-stylelint -D
+npm install prettier-stylelint --save-dev
 ```
 
 ## Usage
@@ -29,6 +30,37 @@ const formatted = format(options)
 a[id='foo'] {
     content: 'x';
 }
+```   
+
+### CLI Options
+
+The cli automatically ignores `.gitignore` and `.prettierignore`.
+
+>**NOTE:** It is recommended that you keep your files under source control and committed
+> before running `prettier-stylelint --write` as it will overwrite your files!
+
+
+```
+Usage
+  $ prettier-stylelint [<file|glob> ...]
+
+Options
+  --ignore          Additional paths to ignore  [Can be set multiple times]
+  --extension       Additional extension to lint [Can be set multiple times]
+  --cwd=<dir>       Working directory for files
+  --stdin           Validate/fix code from stdin ('prettier-stylelint -' also works)
+  --write           Edit files in place (DRAGONS AHEAD !!)
+  --quiet -q        Only log std.err
+
+Examples
+  $ prettier-stylelint
+  $ prettier-stylelint index.js
+  $ prettier-stylelint *.js !foo.js
+  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint --stdin
+  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint -
+
+Default pattern when no arguments:
+  **/*.{css,scss,less,sss}
 ```
 
 ## Related
@@ -39,4 +71,4 @@ a[id='foo'] {
 
 ## License
 
-MIT © [Hugo Dias](http://hugodias.me)
+MIT © [Hugo Dias](https://hugodias.me)

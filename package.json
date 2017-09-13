@@ -2,6 +2,7 @@
     "name": "prettier-stylelint",
     "version": "0.0.1",
     "main": "index.js",
+    "bin": "./cli.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
     "license": "MIT",
     "keywords": [
@@ -21,24 +22,28 @@
         "np": "^2.16.0"
     },
     "eslintConfig": {
-        "extends": "halo/plugins"
+        "extends": "halo/plugins",
+        "parserOptions": {
+            "sourceType": "script"
+        }
     },
     "scripts": {
         "test": "ava"
     },
     "dependencies": {
-        "@std/esm": "^0.7.1",
         "cosmiconfig": "^2.2.2",
+        "debug": "^3.0.1",
         "get-stdin": "^5.0.1",
         "globby": "^6.1.0",
+        "ignore": "^3.3.5",
+        "import-local": "^0.1.1",
         "meow": "^3.7.0",
+        "pify": "^3.0.0",
         "prettier": "^1.6.1",
         "stylelint": "^8.1.1",
         "temp-write": "^3.3.0",
-        "tempy": "^0.1.0"
-    },
-    "@std/esm": {
-        "esm": "all"
+        "tempy": "^0.2.0",
+        "update-notifier": "^2.2.0"
     },
     "stylelint": {
         "rules": {
@@ -47,9 +52,7 @@
             "indentation": [
                 4,
                 {
-                    "except": [
-                        "value"
-                    ]
+                    "except": ["value"]
                 }
             ]
         }

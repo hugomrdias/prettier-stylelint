@@ -1,5 +1,17 @@
 #!/usr/bin/env node
-/* eslint-disable import/no-unassigned-import,import/unambiguous */
+'use strict';
 
-require = require('@std/esm')(module);
-module.exports = require('./src/cli.js');
+const debug = require('debug')('prettier-stylelint');
+const importLocal = require('import-local');
+
+// Prefer the local installation of prettier-stylelint
+if (importLocal(__filename)) {
+    debug('Using local install of prettier-stylelint cli');
+} else {
+    try {
+        require('./src/cli');
+    } catch (err) {
+        console.error(`\n  ${err.message}`);
+        process.exit(1);
+    }
+}

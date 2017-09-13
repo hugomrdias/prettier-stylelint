@@ -1,39 +1,55 @@
-import fs from 'fs';
-import path from 'path';
-import meow from 'meow';
-import globby from 'globby';
-import getStdin from 'get-stdin';
-import { format } from './index';
+#!/usr/bin/env node
+/* eslint-disable import/unambiguous */
+'use strict';
+
+const fs = require('fs');
+const updateNotifier = require('update-notifier');
+const meow = require('meow');
+const globby = require('globby');
+const getStdin = require('get-stdin');
+const pify = require('pify');
+const debug = require('debug')('prettier-stylelint');
+const { arrify, ignore } = require('./utils');
+const { format } = require('./index');
 
 const cli = meow(
     `
 Usage
   $ prettier-stylelint [<file|glob> ...]
+
 Options
   --ignore          Additional paths to ignore  [Can be set multiple times]
   --extension       Additional extension to lint [Can be set multiple times]
   --cwd=<dir>       Working directory for files
-  --stdin           Validate/fix code from stdin
+  --stdin           Validate/fix code from stdin ('prettier-stylelint -' also works)
+  --write           Edit files in place (DRAGONS AHEAD !!)
+  --quiet -q        Only log std.err
+
 Examples
   $ prettier-stylelint
   $ prettier-stylelint index.js
   $ prettier-stylelint *.js !foo.js
-  $ prettier-stylelint --space
   $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint --stdin
-  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint -
+
+Default pattern when no arguments:
+  **/*.{css,scss,less,sss}
 `,
     {
-        string: ['_'],
-        boolean: ['stdin'],
+        string: ['_', 'ignore', 'extension', 'cwd'],
+        boolean: ['stdin', 'write'],
         default: {
-            // -semicolon: true,
-            esnext: true
-        }
+            cwd: process.cwd(),
+            write: false,
+            quiet: false
+        },
+        alias: { q: 'quiet' }
     }
 );
+
+updateNotifier({ pkg: cli.pkg }).notify();
+
 let input = cli.input;
 const opts = cli.flags;
-
 const DEFAULT_EXTENSION = ['css', 'scss', 'less', 'sss'];
 const DEFAULT_PATTERN = `**/*.{${DEFAULT_EXTENSION.join(',')}}`;
 const DEFAULT_IGNORE = [
@@ -51,6 +67,14 @@ const DEFAULT_IGNORE = [
     'dist/**'
 ];
 
+const options = {
+    ignore: DEFAULT_IGNORE.concat(arrify(opts.ignore)),
+    extensions: DEFAULT_EXTENSION.concat(arrify(opts.extension)),
+    cwd: opts.cwd,
+    write: opts.write,
+    quiet: opts.quiet
+};
+
 if (input[0] === '-') {
     opts.stdin = true;
     input.shift();
@@ -59,7 +83,7 @@ if (opts.stdin) {
     getStdin()
         .then(str =>
             format({
-                filepath: process.cwd(),
+                filepath: opts.cwd,
                 text: str
             }).then(source => process.stdout.write(source))
         )
@@ -70,35 +94,41 @@ if (opts.stdin) {
 } else {
     const isEmptyPatterns = input.length === 0;
 
-    input = isEmptyPatterns ? [DEFAULT_PATTERN] : input;
+    input = isEmptyPatterns ? [DEFAULT_PATTERN] : arrify(input);
 
     globby(input, {
-        ignore: DEFAULT_IGNORE,
+        ignore: options.ignore,
         nodir: true,
-        cwd: process.cwd()
+        cwd: options.cwd
     })
         .then((paths) => {
-            // Filter out unwanted file extensions
-            // For silly users that don't specify an extension in the glob pattern
-            if (!isEmptyPatterns) {
-                paths = paths.filter((filePath) => {
-                    const ext = path.extname(filePath).replace('.', '');
-
-                    return DEFAULT_EXTENSION.indexOf(ext) !== -1;
-                });
-            }
+            paths = ignore(paths, options);
 
             return Promise.all(
                 paths.map(path =>
                     format({
                         text: fs.readFileSync(path, 'utf8'),
-                        filePath: path
-                    }).then((formatted) => {
-                        console.log(path + ' \n');
-                        console.log(formatted);
-
-                        return formatted;
+                        filePath: path,
+                        quiet: options.quiet
                     })
+                        .then((formatted) => {
+                            if (!options.quiet) {
+                                console.log(formatted);
+                            }
+                            if (options.write) {
+                                return pify(fs.writeFile)(path, formatted);
+                            }
+
+                            return formatted;
+                        })
+                        .catch((err) => {
+                            console.error(
+                                `prettier-stylelint [ERROR]: There was an error formatting "${path}"\n`
+                            );
+                            console.error(err.stack || err);
+                            console.error('\n');
+                            process.exitCode = 1;
+                        })
                 )
             );
         })

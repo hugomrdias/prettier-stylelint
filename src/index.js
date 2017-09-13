@@ -1,4 +1,4 @@
-/* eslint-disable import/unambiguous */
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -59,23 +59,22 @@ resolveConfig.resolve = (stylelintConfig) => {
     return [prettierConfig, stylelintConfig];
 };
 
-function stylelinter(originalPath, filepath, config) {
+function stylelinter(tempPath, { stylelintConfig, filePath, quiet }) {
     return stylelint
         .lint({
-            files: filepath,
-            config: config,
+            files: tempPath,
+            config: stylelintConfig,
             fix: true,
             formatter: 'string'
         })
         .then(({ errored, output }) => {
-            if (errored) {
-                console.error(
-                    'Stylelint errors: ' +
-                        path.relative(process.cwd(), originalPath),
-                    output
-                );
+            if (!quiet) {
+                console.log(`file: ${filePath}\n`);
+                if (errored) {
+                    console.error(output);
+                }
             }
-            const source = fs.readFileSync(filepath, 'utf8');
+            const source = fs.readFileSync(tempPath, 'utf8');
 
             return source;
         });
@@ -97,7 +96,10 @@ function format(options) {
             'fix-stylelint' + path.extname(filePath)
         );
 
-        return stylelinter(filePath, tempPath, stylelintConfig);
+        options.stylelintConfig = stylelintConfig;
+        options.prettierConfig = prettierConfig;
+
+        return stylelinter(tempPath, options);
     });
 }
 
