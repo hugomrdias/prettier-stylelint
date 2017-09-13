@@ -1,6 +1,6 @@
 {
     "name": "prettier-stylelint",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "index.js",
     "bin": "./cli.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
