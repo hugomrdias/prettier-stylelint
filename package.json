@@ -16,20 +16,14 @@
         "strict",
         "check"
     ],
+    "scripts": {
+        "test": "ava"
+    },
     "devDependencies": {
         "ava": "^0.22.0",
         "eslint-config-halo": "^2.3.3",
         "np": "^2.16.0",
         "stylelint-config-recommended": "^1.0.0"
-    },
-    "eslintConfig": {
-        "extends": "halo/plugins",
-        "parserOptions": {
-            "sourceType": "script"
-        }
-    },
-    "scripts": {
-        "test": "ava"
     },
     "dependencies": {
         "cosmiconfig": "^2.2.2",
@@ -46,10 +40,23 @@
         "tempy": "^0.2.0",
         "update-notifier": "^2.2.0"
     },
+    "eslintConfig": {
+        "extends": "halo/plugins",
+        "parserOptions": {
+            "sourceType": "script"
+        }
+    },
     "stylelint": {
-        "extends": [
-            "stylelint-config-recommended",
-            "./config"
-        ]
+        "extends": ["stylelint-config-recommended", "./config"]
+    },
+    "prettier": {
+        "printWidth": 80,
+        "tabWidth": 4,
+        "useTabs": false,
+        "semi": false,
+        "singleQuote": true,
+        "trailingComma": "none",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": false
     }
 }

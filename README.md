@@ -1,10 +1,7 @@
 # prettier-stylelint [![NPM Version](https://img.shields.io/npm/v/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM Downloads](https://img.shields.io/npm/dt/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM License](https://img.shields.io/npm/l/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) 
-> Format your styles with ease
+> Format your styles with ease!
 
 code > prettier > stylelint > formatted code   
-prettier-eslint for stylelint :)   
-**THIS IS STILL BETA DON'T USE THIS IN ANY IMPORTANT CODE**   
-**IF YOU DO GIT COMMIT FIRST ^^**
 
 
 ## Install
@@ -15,8 +12,28 @@ npm install prettier-stylelint --save-dev
 ```
 
 ## Usage
+This package has a stylelint config to disable some rules that conflict with prettier.
 
 
+```json
+"stylelint": {
+    "extends": [
+        "stylelint-config-idiomatic-order",
+        "./node_modules/prettier-stylelint/config.js"
+    ],
+    "rules": {
+        "indentation": 4,
+        "string-quotes": "single"
+    }
+}
+
+```
+
+After adding the disabling config you can just `prettier-stylelint --write` and its done. Check the CLI options below for more information.   
+Also in a near future we should have support for prettier-stylelint in `prettier-vscode` follow this [PR](prettier-vscode).
+
+
+### API
 ```js
 const format = require('prettier-eslint')
 const sourceCode = 'a[id="foo"] { content: "x"; }'
@@ -50,14 +67,13 @@ Options
   --cwd=<dir>       Working directory for files
   --stdin           Validate/fix code from stdin ('prettier-stylelint -' also works)
   --write           Edit files in place (DRAGONS AHEAD !!)
-  --quiet -q        Only log std.err
+  --quiet -q        Only log stderr
 
 Examples
   $ prettier-stylelint
   $ prettier-stylelint index.js
   $ prettier-stylelint *.js !foo.js
   $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint --stdin
-  $ echo 'a[id="foo"] { content: "x"; }' | prettier-stylelint -
 
 Default pattern when no arguments:
   **/*.{css,scss,less,sss}
