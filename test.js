@@ -7,18 +7,18 @@ test('resolveConfig', t =>
     resolveConfig('./fixtures/style.css').then(config =>
         t.deepEqual(config[1], {
             rules: {
-                'string-quotes': 'single',
-                'indentation': [4, { except: ['value'] }],
-                'color-hex-case': 'upper',
-                'color-hex-length': 'short',
+                'string-quotes': ['single'],
+                indentation: [4, { except: ['value'] }],
+                'color-hex-case': ['upper'],
+                'color-hex-length': ['short'],
                 'block-no-empty': null,
-                'color-no-invalid-hex': true,
+                'color-no-invalid-hex': [true],
                 'comment-empty-line-before': [
                     'always',
                     { ignore: ['stylelint-commands', 'after-comment'] }
                 ],
-                'declaration-colon-space-after': 'always',
-                'max-empty-lines': 2,
+                'declaration-colon-space-after': ['always'],
+                'max-empty-lines': [2],
                 'rule-empty-line-before': [
                     'always',
                     {
@@ -26,36 +26,36 @@ test('resolveConfig', t =>
                         ignore: ['after-comment']
                     }
                 ],
-                'unit-whitelist': ['em', 'rem', '%', 's']
+                'unit-whitelist': [['em', 'rem', '%', 's']]
             }
         })
     ));
 
-test('resolveConfig not found', (t) => {
+test('resolveConfig not found', t => {
     const tempPath = tempWrite.sync(
         'a[id="foo"] { content: "x"; }',
         'test.css'
     );
 
     return resolveConfig(tempPath)
-        .then((config) => {
+        .then(config => {
             console.log(config);
 
             return config;
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err);
             t.pass();
         });
 });
 
-test('format', (t) => {
+test('format', t => {
     const source = fs.readFileSync('./fixtures/style.css', 'utf8');
 
     return format({
         text: source,
         filePath: './fixtures/style.css'
-    }).then((source) => {
+    }).then(source => {
         t.is(
             source,
             `@media print {
@@ -75,13 +75,13 @@ a[id='foo'] {
     });
 });
 
-test('format less', (t) => {
+test('format less', t => {
     const source = fs.readFileSync('./fixtures/less.less', 'utf8');
 
     return format({
         text: source,
         filePath: './fixtures/less.less'
-    }).then((source) => {
+    }).then(source => {
         t.is(
             source,
             `@base: #F938AB;

@@ -1,15 +1,15 @@
 {
     "stylelint": {
         "rules": {
-            "string-quotes": "single",
+            "string-quotes": ["single"],
             "indentation": [
                 4,
                 {
                     "except": ["value"]
                 }
             ],
-            "color-hex-case": "upper",
-            "color-hex-length": "short",
+            "color-hex-case": ["upper"],
+            "color-hex-length": ["short"],
             "block-no-empty": null,
             "color-no-invalid-hex": true,
             "comment-empty-line-before": [
@@ -18,8 +18,8 @@
                     "ignore": ["stylelint-commands", "after-comment"]
                 }
             ],
-            "declaration-colon-space-after": "always",
-            "max-empty-lines": 2,
+            "declaration-colon-space-after": ["always"],
+            "max-empty-lines": [2],
             "rule-empty-line-before": [
                 "always",
                 {

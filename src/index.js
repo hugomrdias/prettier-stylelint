@@ -38,17 +38,13 @@ resolveConfig.resolve = (stylelintConfig) => {
     const { rules } = stylelintConfig;
 
     if (rules['max-line-length']) {
-        const printWidth = Array.isArray(rules['max-line-length']) ?
-            rules['max-line-length'][0] :
-            rules['max-line-length'];
+        const printWidth = rules['max-line-length'][0];
 
         prettierConfig.printWidth = printWidth;
     }
 
     if (rules['string-quotes']) {
-        const quotes = Array.isArray(rules['string-quotes']) ?
-            rules['string-quotes'][0] :
-            rules['string-quotes'];
+        const quotes = rules['string-quotes'][0];
 
         if (quotes === 'single') {
             prettierConfig.singleQuote = true;
@@ -56,9 +52,7 @@ resolveConfig.resolve = (stylelintConfig) => {
     }
 
     if (rules.indentation) {
-        const indentation = Array.isArray(rules.indentation) ?
-            rules.indentation[0] :
-            rules.indentation;
+        const indentation = rules.indentation[0];
 
         if (indentation === 'tab') {
             prettierConfig.useTabs = true;
