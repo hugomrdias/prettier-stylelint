@@ -3,6 +3,7 @@
 
 code > prettier > stylelint > formatted code   
 
+prettier-stylelint attempts to create a prettier config based on the stylelint config then format with prettier and after stylelint --fix. So after that you should end up with formatted code with no linting errors.
 
 ## Install
 

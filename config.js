@@ -73,5 +73,3 @@ module.exports = {
         'no-eol-whitespace': null
     }
 };
-
-// change all case rules to lowercase
