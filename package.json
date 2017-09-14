@@ -1,6 +1,6 @@
 {
     "name": "prettier-stylelint",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "main": "index.js",
     "bin": "./cli.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
@@ -47,6 +47,9 @@
         "update-notifier": "^2.2.0"
     },
     "stylelint": {
-        "extends": ["stylelint-config-recommended", "./config"]
+        "extends": [
+            "stylelint-config-recommended",
+            "./config"
+        ]
     }
 }
