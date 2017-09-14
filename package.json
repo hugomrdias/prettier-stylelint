@@ -19,7 +19,8 @@
     "devDependencies": {
         "ava": "^0.22.0",
         "eslint-config-halo": "^2.3.3",
-        "np": "^2.16.0"
+        "np": "^2.16.0",
+        "stylelint-config-recommended": "^1.0.0"
     },
     "eslintConfig": {
         "extends": "halo/plugins",
@@ -46,17 +47,6 @@
         "update-notifier": "^2.2.0"
     },
     "stylelint": {
-        "rules": {
-            "string-quotes": "single",
-            "color-no-invalid-hex": true,
-            "indentation": [
-                4,
-                {
-                    "except": [
-                        "value"
-                    ]
-                }
-            ]
-        }
+        "extends": ["stylelint-config-recommended", "./config"]
     }
 }

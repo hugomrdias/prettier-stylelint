@@ -5,9 +5,11 @@ const path = require('path');
 const prettier = require('prettier');
 const tempWrite = require('temp-write');
 const stylelint = require('stylelint');
-const cosmiconfig = require('cosmiconfig');
+// const cosmiconfig = require('cosmiconfig');
+const debug = require('debug')('prettier-stylelint:main');
 
-const explorer = cosmiconfig('stylelint');
+// const explorer = cosmiconfig('stylelint');
+const linterAPI = stylelint.createLinter();
 
 /**
  * Resolve Config for the given file
@@ -24,12 +26,24 @@ function resolveConfig(file, options = {}) {
         return Promise.resolve(resolve(options.stylelintConfig));
     }
 
-    return explorer.load(file).then(({ config }) => resolve(config));
+    return linterAPI._fullExplorer
+        .load(file)
+        .then(({ config }) => resolve(config));
+
+    // return explorer.load(file).then(({ config }) => resolve(config));
 }
 
 resolveConfig.resolve = (stylelintConfig) => {
     const prettierConfig = {};
     const { rules } = stylelintConfig;
+
+    if (rules['max-line-length']) {
+        const printWidth = Array.isArray(rules['max-line-length']) ?
+            rules['max-line-length'][0] :
+            rules['max-line-length'];
+
+        prettierConfig.printWidth = printWidth;
+    }
 
     if (rules['string-quotes']) {
         const quotes = Array.isArray(rules['string-quotes']) ?
@@ -55,6 +69,8 @@ resolveConfig.resolve = (stylelintConfig) => {
         }
     }
     prettierConfig.parser = 'postcss';
+    debug('prettier %O', prettierConfig);
+    debug('linter %O', stylelintConfig);
 
     return [prettierConfig, stylelintConfig];
 };

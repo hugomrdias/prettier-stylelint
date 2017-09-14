@@ -1,5 +1,6 @@
 {
     "stylelint": {
+        "extends": ["stylelint-config-recommended", "./config"],
         "rules": {
             "string-quotes": "single",
             "indentation": [
@@ -10,24 +11,7 @@
             ],
             "color-hex-case": "upper",
             "color-hex-length": "short",
-            "block-no-empty": null,
-            "color-no-invalid-hex": true,
-            "comment-empty-line-before": [
-                "always",
-                {
-                    "ignore": ["stylelint-commands", "after-comment"]
-                }
-            ],
-            "declaration-colon-space-after": "always",
-            "max-empty-lines": 2,
-            "rule-empty-line-before": [
-                "always",
-                {
-                    "except": ["first-nested"],
-                    "ignore": ["after-comment"]
-                }
-            ],
-            "unit-whitelist": ["em", "rem", "%", "s"]
+            "unit-whitelist": ["em", "rem", "%", "s", "px"]
         }
     }
 }

@@ -1,0 +1,320 @@
+/** this file formatted with prettier-stylelint MUST NOT HAVE ANY ERROR **/
+/*  ./cli.js tests/test-disable-rules.css --write -q */
+
+/* https://github.com/hugomrdias/prettier-stylelint/issues/1 */
+
+/* only prettier or only stylelint might have errors*/
+
+a {
+    transform: translate(1, 1);
+}
+
+a {
+    transform: translate(1, 1);
+}
+
+a {
+    transform: translate(1, 1);
+}
+
+a {
+    transform: translate(1, 1);
+}
+
+@font-face {
+    font-family: 'foo';
+    src: url('foo.ttf');
+}
+
+a {
+    background: url('x.jpg');
+}
+
+a {
+    transform: translate(1, 1)scale(3);
+}
+
+a {
+    transform: translate(1, 1) scale(3);
+}
+
+a {
+    padding: calc(1 * 2px), calc(2 * 5px);
+}
+
+a {
+    background-size: 0, 0;
+}
+
+a {
+    box-shadow: inset 0 2px 0 #DCFFA6, 0 2px 5px #000, inset 0 2px 0 #DCFFA6,
+    0 2px 5px #000, inset 0 2px 0 #DCFFA6, 0 2px 5px #000;
+}
+
+a {
+    top: 10px;
+    --foo: pink;
+    --bar: red;
+}
+
+a {
+    color: pink !important;
+}
+
+a {
+    color: pink !important;
+}
+
+a {
+    color: pink !important;
+}
+
+a {
+    color: pink !important;
+}
+
+a {
+    color: pink !important;
+}
+
+a {
+    box-shadow: 0 0 0 1px #5B9DD9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+}
+
+a {
+    --foo: pink;
+
+    top: 5px;
+}
+
+a {
+    color: pink; /* end-of-line comment
+      containing a newline */
+    top: 0;
+}
+
+a {
+    color: pink; /* end-of-line comment */
+    top: 0;
+}
+
+a {
+    color: pink;
+    top: 0;
+}
+
+a {
+    background: orange;
+    color: pink;
+}
+
+a {
+    background: orange;
+    color: pink;
+}
+
+a {
+    color: pink;
+}
+
+a {
+    color: pink;
+}
+
+a {
+    color: pink;
+}
+
+b {
+    color: red;
+}
+
+a {
+    color: pink;
+}
+
+[target='_blank '] {
+    color: pink;
+}
+
+[target='_blank '] {
+    color: pink;
+}
+
+[target ='_blank'] {
+    color: pink;
+}
+
+[target = '_blank'] {
+    color: pink;
+}
+
+[title='flower'] {
+    color: pink;
+}
+
+[target='_blank'] {
+    color: pink;
+}
+
+[class^='top'] {
+    color: pink;
+}
+
+a + b {
+    color: pink;
+}
+
+a > b {
+    color: pink;
+}
+
+.foo .bar {
+    color: pink;
+}
+
+input:not([type='submit']) {
+    color: pink;
+}
+
+a::first-letter {
+    color: pink;
+}
+
+a:first-letter {
+    color: pink;
+}
+
+a,
+b {
+    color: pink;
+}
+
+a,
+b {
+    color: pink;
+}
+
+a {
+    color: pink;
+}
+b {
+    color: pink;
+}
+
+@media (max-width: 600px) {
+    color: pink;
+}
+
+@media (max-width: 600px) {
+    color: pink;
+}
+
+@media (width >= 600px) {
+    color: pink;
+}
+
+@media (width >= 600px) {
+    color: pink;
+}
+
+@media (width >= 600px) {
+    color: pink;
+}
+
+@media screen and (color), projection and (color) {
+    color: pink;
+}
+
+@media screen and (color), projection and (color) {
+    color: pink;
+}
+
+@charset "UTF-8";
+
+@import "x.css" screen and (orientation: landscape);
+
+@media (min-width: 700px) and (orientation: landscape) {
+}
+
+@import url("responsive/gt768.css"), screen and (min-width: 768px);
+
+@media (min-width: 700px) {
+    color: pink;
+}
+
+@media (min-width: 700px) {
+    color: pink;
+}
+
+@import url("x.css");
+
+@charset "UTF-8";
+
+@media (min-width: 700px) {
+    color: pink;
+}
+
+@import url("x.css"); /* end-of-line comment */
+
+a {
+    color: pink;
+}
+
+@import url("x.css");
+@import url("y.css");
+
+@import 'components/buttons';
+
+a {
+    color: pink;
+}
+/* comment */
+
+a {
+    color: pink;
+}
+
+/* comment */
+
+a {
+    /* comment */
+    color: pink;
+}
+
+/** comment**/
+/** comment**/
+
+/*comment*/
+
+a {
+    color: pink;
+}
+
+b {
+    color: pink;
+}
+
+/**
+ * Call me Ishmael.
+ *
+ *
+ *
+ * Some years ago -- never mind how log precisely -- ...
+ */
+
+a {
+    color: pink;
+}
+
+b {
+    color: pink;
+}
+
+a {
+    background: linear-gradient(red, blue);
+}
+
+a {
+    color: pink;
+}
