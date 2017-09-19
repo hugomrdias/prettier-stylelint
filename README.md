@@ -1,4 +1,4 @@
-# prettier-stylelint [![NPM Version](https://img.shields.io/npm/v/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM Downloads](https://img.shields.io/npm/dt/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM License](https://img.shields.io/npm/l/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) 
+# prettier-stylelint [![NPM Version](https://img.shields.io/npm/v/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM Downloads](https://img.shields.io/npm/dt/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM License](https://img.shields.io/npm/l/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![Build Status](https://travis-ci.org/hugomrdias/prettier-stylelint.svg?branch=master)](https://travis-ci.org/hugomrdias/prettier-stylelint) [![codecov](https://codecov.io/gh/hugomrdias/prettier-stylelint/branch/master/graph/badge.svg)](https://codecov.io/gh/hugomrdias/prettier-stylelint)
 > Format your styles with ease!
 
 code > prettier > stylelint > formatted code   
