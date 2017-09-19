@@ -22,6 +22,7 @@
         "validate": "run-p lint test",
         "precommit": "yarn validate",
         "prepush": "yarn validate",
+        "version": "yarn changelog",
         "cov":
             "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
         "cov:report":
