@@ -3,7 +3,10 @@
 const fs = require('fs');
 const test = require('ava');
 const tempWrite = require('temp-write');
+const stylelint = require('stylelint');
 const { format, resolveConfig } = require('./index');
+
+const linterAPI = stylelint.createLinter({ fix: true });
 
 test('resolveConfig', t =>
     resolveConfig('./fixtures/style.css').then(config =>
@@ -33,22 +36,38 @@ test('resolveConfig', t =>
         })
     ));
 
-test('resolveConfig not found', (t) => {
+test('resolveConfig not found fallback process.cwd', (t) => {
     const tempPath = tempWrite.sync(
         'a[id="foo"] { content: "x"; }',
         'test.css'
     );
 
-    return resolveConfig(tempPath)
-        .then((config) => {
-            console.log(config);
+    return resolveConfig(tempPath).then((config) => {
+        t.is(config[1].rules['function-comma-newline-after'], null);
 
-            return config;
-        })
-        .catch((err) => {
-            console.log(err);
-            t.pass();
-        });
+        return config;
+    });
+});
+
+test('resolveConfig shortcircuit ', t =>
+    resolveConfig(null, { stylelintConfig: { rules: { 'max-line-length': [20] } } }).then((config) => {
+        t.is(config[0].printWidth, 20);
+
+        return config;
+    }));
+
+test('resolve string quotes === double ', (t) => {
+    const config = resolveConfig.resolve({ rules: { 'string-quotes': ['double'] } });
+
+    t.is(config[0].singleQuote, undefined);
+});
+
+test('resolve indentation === tab', (t) => {
+    const config = resolveConfig.resolve({ rules: { indentation: ['tab'] } });
+
+    t.plan(2);
+    t.is(config[0].useTabs, true);
+    t.is(config[0].tabWidth, 2);
 });
 
 test('format', (t) => {
@@ -109,4 +128,49 @@ test('format less', (t) => {
 
         return source;
     });
+});
+
+test('format with syntax error from prettier', (t) => {
+    const source = fs.readFileSync('./tests/error-syntax.css', 'utf8');
+
+    return format({
+        text: source,
+        filePath: './tests/error-syntax.css'
+    }).catch((err) => {
+        t.is(err.name, 'SyntaxError');
+    });
+});
+
+test('alternate stylelint format', (t) => {
+    const source = fs.readFileSync('./fixtures/style.css', 'utf8');
+
+    return linterAPI
+        ._lintSource({
+            code: source
+            // codeFilename: process.cwd()
+            // codeFilename: path.resolve(process.cwd(), './tests/less.less')
+            // filePath: path.resolve(process.cwd(), './fixtures/style.css')
+        })
+        .then((result) => {
+            const fixed = result.root.toString(result.opts.syntax);
+
+            t.is(
+                result.root.toString(result.opts.syntax),
+                `@media print {
+    a {
+        color: #FFF;
+        background-position: top left,
+        top right;
+    }
+}
+
+
+
+
+a[id="foo"] { content: "x"; }
+`
+            );
+
+            return fixed;
+        });
 });

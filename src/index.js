@@ -1,15 +1,13 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const prettier = require('prettier');
-const tempWrite = require('temp-write');
 const stylelint = require('stylelint');
 // const cosmiconfig = require('cosmiconfig');
 const debug = require('debug')('prettier-stylelint:main');
 
 // const explorer = cosmiconfig('stylelint');
-const linterAPI = stylelint.createLinter();
+const linterAPI = stylelint.createLinter({ fix: true });
 
 /**
  * Resolve Config for the given file
@@ -26,8 +24,8 @@ function resolveConfig(file, options = {}) {
         return Promise.resolve(resolve(options.stylelintConfig));
     }
 
-    return linterAPI._fullExplorer
-        .load(file)
+    return linterAPI
+        .getConfigForFile(file)
         .then(({ config }) => resolve(config));
 
     // return explorer.load(file).then(({ config }) => resolve(config));
@@ -69,48 +67,30 @@ resolveConfig.resolve = (stylelintConfig) => {
     return [prettierConfig, stylelintConfig];
 };
 
-function stylelinter(tempPath, { stylelintConfig, filePath, quiet }) {
-    return stylelint
-        .lint({
-            files: tempPath,
-            config: stylelintConfig,
-            fix: true,
-            formatter: 'string'
+function stylelinter(code, filePath) {
+    return linterAPI
+        ._lintSource({
+            code,
+            codeFilename: filePath
         })
-        .then(({ errored, output }) => {
-            if (!quiet) {
-                console.log(`file: ${filePath}\n`);
-                if (errored) {
-                    console.error(output);
-                }
-            }
-            const source = fs.readFileSync(tempPath, 'utf8');
+        .then((result) => {
+            const fixed = result.root.toString(result.opts.syntax);
 
-            return source;
+            return fixed;
         });
 }
 
 function format(options) {
-    const { filePath, text, stylelintConfig } = options;
+    const { filePath = '', text } = options;
 
-    if (!filePath && !stylelintConfig) {
-        throw new Error('Either provide file path or stylelint config!');
-    }
-
-    return resolveConfig(
-        filePath,
-        options
-    ).then(([prettierConfig, stylelintConfig]) => {
-        const tempPath = tempWrite.sync(
+    return resolveConfig(filePath, options).then(([prettierConfig]) =>
+        stylelinter(
             prettier.format(text, prettierConfig),
-            'fix-stylelint' + path.extname(filePath)
-        );
-
-        options.stylelintConfig = stylelintConfig;
-        options.prettierConfig = prettierConfig;
-
-        return stylelinter(tempPath, options);
-    });
+            path.isAbsolute(filePath) ?
+                filePath :
+                path.resolve(process.cwd(), filePath)
+        )
+    );
 }
 
 exports.format = format;
