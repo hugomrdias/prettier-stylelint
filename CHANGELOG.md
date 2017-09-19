@@ -1,3 +1,18 @@
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.0...v0.2.1) (2017-09-19)
+
+
+### Bug Fixes
+
+* add version to build changelog with np ([b925156](https://github.com/hugomrdias/prettier-stylelint/commit/b925156))
+
+
+### Features
+
+* add changelog ([2839723](https://github.com/hugomrdias/prettier-stylelint/commit/2839723))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/hugomrdias/prettier-stylelint/compare/v0.1.1...v0.2.0) (2017-09-14)
 
