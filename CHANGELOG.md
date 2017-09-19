@@ -1,5 +1,10 @@
-<a name="0.2.2"></a>
-## [0.2.2](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.1...v0.2.2) (2017-09-19)
+<a name="0.2.3"></a>
+## [0.2.3](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.1...v0.2.3) (2017-09-19)
+
+
+### Bug Fixes
+
+* changelog commit again ([57426d4](https://github.com/hugomrdias/prettier-stylelint/commit/57426d4))
 
 
 
