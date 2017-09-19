@@ -17,12 +17,25 @@
         "check"
     ],
     "scripts": {
-        "test": "ava"
+        "test": "nyc ava",
+        "lint": "eslint --cache *.js src/*.js",
+        "validate": "run-p lint test",
+        "precommit": "yarn validate",
+        "prepush": "yarn validate",
+        "cov":
+            "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
+        "cov:report":
+            "nyc report --reporter=text-lcov > coverage.lcov && codecov"
     },
     "devDependencies": {
         "ava": "^0.22.0",
+        "codecov": "^2.3.0",
         "eslint-config-halo": "^2.3.3",
+        "http-serve": "^1.0.1",
+        "husky": "^0.14.3",
         "np": "^2.16.0",
+        "npm-run-all": "^4.1.1",
+        "nyc": "^11.2.1",
         "stylelint-config-recommended": "^1.0.0"
     },
     "dependencies": {

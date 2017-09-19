@@ -1,14 +1,16 @@
-import fs from 'fs';
-import test from 'ava';
-import tempWrite from 'temp-write';
-import { format, resolveConfig } from './index';
+'use strict';
+
+const fs = require('fs');
+const test = require('ava');
+const tempWrite = require('temp-write');
+const { format, resolveConfig } = require('./index');
 
 test('resolveConfig', t =>
     resolveConfig('./fixtures/style.css').then(config =>
         t.deepEqual(config[1], {
             rules: {
                 'string-quotes': ['single'],
-                indentation: [4, { except: ['value'] }],
+                'indentation': [4, { except: ['value'] }],
                 'color-hex-case': ['upper'],
                 'color-hex-length': ['short'],
                 'block-no-empty': null,
@@ -31,31 +33,31 @@ test('resolveConfig', t =>
         })
     ));
 
-test('resolveConfig not found', t => {
+test('resolveConfig not found', (t) => {
     const tempPath = tempWrite.sync(
         'a[id="foo"] { content: "x"; }',
         'test.css'
     );
 
     return resolveConfig(tempPath)
-        .then(config => {
+        .then((config) => {
             console.log(config);
 
             return config;
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(err);
             t.pass();
         });
 });
 
-test('format', t => {
+test('format', (t) => {
     const source = fs.readFileSync('./fixtures/style.css', 'utf8');
 
     return format({
         text: source,
         filePath: './fixtures/style.css'
-    }).then(source => {
+    }).then((source) => {
         t.is(
             source,
             `@media print {
@@ -75,13 +77,13 @@ a[id='foo'] {
     });
 });
 
-test('format less', t => {
+test('format less', (t) => {
     const source = fs.readFileSync('./fixtures/less.less', 'utf8');
 
     return format({
         text: source,
         filePath: './fixtures/less.less'
-    }).then(source => {
+    }).then((source) => {
         t.is(
             source,
             `@base: #F938AB;

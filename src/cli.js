@@ -8,7 +8,6 @@ const meow = require('meow');
 const globby = require('globby');
 const getStdin = require('get-stdin');
 const pify = require('pify');
-const debug = require('debug')('prettier-stylelint');
 const { arrify, ignore } = require('./utils');
 const { format } = require('./index');
 

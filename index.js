@@ -1,2 +1,3 @@
-// require = require('@std/esm')(module);
+'use strict';
+
 module.exports = require('./src/index.js');
