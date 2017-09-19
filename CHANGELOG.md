@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.3...v0.3.0) (2017-09-19)
+
+
+### Features
+
+* no more temp file to fix with stylelint ([d78b40c](https://github.com/hugomrdias/prettier-stylelint/commit/d78b40c))
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.1...v0.2.3) (2017-09-19)
 
