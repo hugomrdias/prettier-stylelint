@@ -31,7 +31,7 @@ This package has a stylelint config to disable some rules that conflict with pre
 ```
 
 After adding the disabling config you can just `prettier-stylelint --write` and its done. Check the CLI options below for more information.   
-Also in a near future we should have support for prettier-stylelint in `prettier-vscode` follow this [PR](prettier-vscode).
+Also in a near future we should have support for prettier-stylelint in `prettier-vscode` follow this [PR](https://github.com/prettier/prettier-vscode/pull/218).
 
 
 ### API
