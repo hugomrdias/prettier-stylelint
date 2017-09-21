@@ -1,3 +1,13 @@
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/hugomrdias/prettier-stylelint/compare/v0.3.1...v0.3.2) (2017-09-21)
+
+
+### Bug Fixes
+
+* dont re use the same linter instance because we can't invalidate the config cache ([b6e1f7b](https://github.com/hugomrdias/prettier-stylelint/commit/b6e1f7b))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/hugomrdias/prettier-stylelint/compare/v0.3.0...v0.3.1) (2017-09-21)
 
