@@ -232,12 +232,13 @@ b {
 
 @charset "UTF-8";
 
-@import "x.css" screen and (orientation: landscape);
+@import 'x.css' screen and (orientation: landscape);
 
 @media (min-width: 700px) and (orientation: landscape) {
+    color: pink;
 }
 
-@import url("responsive/gt768.css"), screen and (min-width: 768px);
+@import url('responsive/gt768.css'), screen and (min-width: 768px);
 
 @media (min-width: 700px) {
     color: pink;
@@ -247,22 +248,20 @@ b {
     color: pink;
 }
 
-@import url("x.css");
-
-@charset "UTF-8";
+@import url('x.css');
 
 @media (min-width: 700px) {
     color: pink;
 }
 
-@import url("x.css"); /* end-of-line comment */
+@import url('x.css'); /* end-of-line comment */
 
 a {
     color: pink;
 }
 
-@import url("x.css");
-@import url("y.css");
+@import url('x.css');
+@import url('y.css');
 
 @import 'components/buttons';
 

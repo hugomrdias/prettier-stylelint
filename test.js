@@ -107,11 +107,11 @@ test('format less', (t) => {
             source,
             `@base: #F938AB;
 
-.box-shadow(@style, @c) when(iscolor(@c)) {
+.box-shadow(@style, @c) when (iscolor(@c)) {
     -webkit-box-shadow: @style @c;
     box-shadow: @style @c;
 }
-.box-shadow(@style, @alpha: 50%) when(isnumber(@alpha)) {
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
     .box-shadow(@style, rgba(0, 0, 0, @alpha));
 }
 
