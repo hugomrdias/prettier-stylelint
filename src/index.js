@@ -7,7 +7,6 @@ const stylelint = require('stylelint');
 const debug = require('debug')('prettier-stylelint:main');
 
 // const explorer = cosmiconfig('stylelint');
-const linterAPI = stylelint.createLinter({ fix: true });
 
 /**
  * Resolve Config for the given file
@@ -19,6 +18,7 @@ const linterAPI = stylelint.createLinter({ fix: true });
  */
 function resolveConfig(file, options = {}) {
     const resolve = resolveConfig.resolve;
+    const linterAPI = stylelint.createLinter({ fix: true });
 
     if (options.stylelintConfig) {
         return Promise.resolve(resolve(options.stylelintConfig));
@@ -68,6 +68,8 @@ resolveConfig.resolve = (stylelintConfig) => {
 };
 
 function stylelinter(code, filePath) {
+    const linterAPI = stylelint.createLinter({ fix: true });
+
     return linterAPI
         ._lintSource({
             code,
