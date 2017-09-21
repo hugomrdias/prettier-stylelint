@@ -1,3 +1,14 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/hugomrdias/prettier-stylelint/compare/v0.3.0...v0.3.1) (2017-09-21)
+
+
+### Bug Fixes
+
+* fix tests and update deps ([fa9ee6e](https://github.com/hugomrdias/prettier-stylelint/commit/fa9ee6e))
+* vscode extension PR url ([6da9874](https://github.com/hugomrdias/prettier-stylelint/commit/6da9874))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/hugomrdias/prettier-stylelint/compare/v0.2.3...v0.3.0) (2017-09-19)
 
