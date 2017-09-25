@@ -1,3 +1,13 @@
+<a name="0.4.2"></a>
+## [0.4.2](https://github.com/hugomrdias/prettier-stylelint/compare/v0.4.1...v0.4.2) (2017-09-25)
+
+
+### Bug Fixes
+
+* add repo url ([0be9ac6](https://github.com/hugomrdias/prettier-stylelint/commit/0be9ac6))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/hugomrdias/prettier-stylelint/compare/v0.4.0...v0.4.1) (2017-09-25)
 
