@@ -2,6 +2,7 @@
     "name": "prettier-stylelint",
     "version": "0.4.1",
     "description": "code > prettier > stylelint > formatted code",
+    "repository": "hugomrdias/prettier-stylelint",
     "main": "index.js",
     "bin": "./cli.js",
     "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
@@ -23,8 +24,10 @@
         "validate": "run-p lint test",
         "precommit": "yarn validate",
         "version": "yarn changelog && git add CHANGELOG.md",
-        "cov": "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
-        "cov:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+        "cov":
+            "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
+        "cov:report":
+            "nyc report --reporter=text-lcov > coverage.lcov && codecov",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
     },
     "devDependencies": {
@@ -60,28 +63,17 @@
         "extends": "halo/node"
     },
     "stylelint": {
-        "extends": [
-            "stylelint-config-recommended",
-            "./config"
-        ],
+        "extends": ["stylelint-config-recommended", "./config"],
         "rules": {
-            "string-quotes": [
-                "single"
-            ],
+            "string-quotes": ["single"],
             "indentation": [
                 4,
                 {
-                    "except": [
-                        "value"
-                    ]
+                    "except": ["value"]
                 }
             ],
-            "color-hex-case": [
-                "upper"
-            ],
-            "color-hex-length": [
-                "short"
-            ]
+            "color-hex-case": ["upper"],
+            "color-hex-length": ["short"]
         }
     },
     "prettier": {
