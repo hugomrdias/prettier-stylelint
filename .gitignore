@@ -11,3 +11,4 @@ node_modules
 .vscode
 .nyc_output
 coverage.lcov
+!fixtures/find-package/node_modules

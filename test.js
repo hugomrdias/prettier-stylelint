@@ -4,12 +4,13 @@ const fs = require('fs');
 const test = require('ava');
 const tempWrite = require('temp-write');
 const stylelint = require('stylelint');
-const { format, resolveConfig } = require('./index');
+const resolveFrom = require('resolve-from');
+const { format, resolveConfig, getPrettierConfig } = require('./index');
 
 const linterAPI = stylelint.createLinter({ fix: true });
 
 test('resolveConfig', t =>
-    resolveConfig('./fixtures/style.css').then(config =>
+    resolveConfig({ filePath: './fixtures/style.css' }).then(config =>
         t.deepEqual(config[1], {
             rules: {
                 'string-quotes': ['single'],
@@ -42,7 +43,7 @@ test('resolveConfig not found fallback process.cwd', (t) => {
         'test.css'
     );
 
-    return resolveConfig(tempPath).then((config) => {
+    return resolveConfig({ filePath: tempPath }).then((config) => {
         t.is(config[1].rules['function-comma-newline-after'], null);
 
         return config;
@@ -50,7 +51,7 @@ test('resolveConfig not found fallback process.cwd', (t) => {
 });
 
 test('resolveConfig shortcircuit ', t =>
-    resolveConfig(null, { stylelintConfig: { rules: { 'max-line-length': [20] } } }).then((config) => {
+    resolveConfig({ stylelintConfig: { rules: { 'max-line-length': [20] } } }).then((config) => {
         t.is(config[0].printWidth, 20);
 
         return config;
@@ -69,6 +70,16 @@ test('resolve indentation === tab', (t) => {
     t.is(config[0].useTabs, true);
     t.is(config[0].tabWidth, 2);
 });
+
+test('resolveConfig prettier merge', t =>
+    resolveConfig({
+        filePath: './fixtures/style.css',
+        prettierOptions: getPrettierConfig('./fixtures/style.css')
+    }).then((config) => {
+        t.is(config[0].semi, false);
+
+        return config;
+    }));
 
 test('format', (t) => {
     const source = fs.readFileSync('./fixtures/style.css', 'utf8');
@@ -95,6 +106,26 @@ a[id='foo'] {
         return source;
     });
 });
+
+test('format without code but with filePath', t =>
+    format({ filePath: './fixtures/style.css' }).then((source) => {
+        t.is(
+            source,
+            `@media print {
+    a {
+        color: #FFF;
+        background-position: top left, top right;
+    }
+}
+
+a[id='foo'] {
+    content: 'x';
+}
+`
+        );
+
+        return source;
+    }));
 
 test('format less', (t) => {
     const source = fs.readFileSync('./fixtures/less.less', 'utf8');
@@ -173,4 +204,31 @@ a[id="foo"] { content: "x"; }
 
             return fixed;
         });
+});
+
+test('resolve relative package', (t) => {
+    const path = resolveFrom('./fixtures/find-package/style.css', 'prettier');
+
+    t.is('1.6.0', require(path).version);
+});
+
+test('resolve relative package deep', (t) => {
+    const path = resolveFrom(
+        './fixtures/find-package/deep/style.css',
+        'prettier'
+    );
+
+    t.is('1.6.0', require(path).version);
+});
+
+test('resolve relative package fallback', (t) => {
+    const path = resolveFrom('./fixtures/style.css', 'prettier');
+
+    t.is('1.7.0', require(path).version);
+});
+
+test('resolve relative package null', (t) => {
+    const path = resolveFrom(__filename, 'prettier');
+
+    t.is('1.7.0', require(path).version);
 });

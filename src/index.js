@@ -1,12 +1,9 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
-const prettier = require('prettier');
-const stylelint = require('stylelint');
-// const cosmiconfig = require('cosmiconfig');
+const resolveFrom = require('resolve-from');
 const debug = require('debug')('prettier-stylelint:main');
-
-// const explorer = cosmiconfig('stylelint');
 
 /**
  * Resolve Config for the given file
@@ -16,36 +13,39 @@ const debug = require('debug')('prettier-stylelint:main');
  * @param {Object} options - options
  * @returns {Promise} -
  */
-function resolveConfig(file, options = {}) {
+function resolveConfig({
+    filePath,
+    stylelintPath,
+    stylelintConfig,
+    prettierOptions
+}) {
     const resolve = resolveConfig.resolve;
-    const linterAPI = stylelint.createLinter({ fix: true });
+    const stylelint = requireRelative(stylelintPath, filePath, 'stylelint');
+    const linterAPI = stylelint.createLinter();
 
-    if (options.stylelintConfig) {
-        return Promise.resolve(resolve(options.stylelintConfig));
+    if (stylelintConfig) {
+        return Promise.resolve(resolve(stylelintConfig, prettierOptions));
     }
 
     return linterAPI
-        .getConfigForFile(file)
-        .then(({ config }) => resolve(config));
-
-    // return explorer.load(file).then(({ config }) => resolve(config));
+        .getConfigForFile(filePath)
+        .then(({ config }) => resolve(config, prettierOptions));
 }
 
-resolveConfig.resolve = (stylelintConfig) => {
-    const prettierConfig = {};
+resolveConfig.resolve = (stylelintConfig, prettierOptions = {}) => {
     const { rules } = stylelintConfig;
 
     if (rules['max-line-length']) {
         const printWidth = rules['max-line-length'][0];
 
-        prettierConfig.printWidth = printWidth;
+        prettierOptions.printWidth = printWidth;
     }
 
     if (rules['string-quotes']) {
         const quotes = rules['string-quotes'][0];
 
         if (quotes === 'single') {
-            prettierConfig.singleQuote = true;
+            prettierOptions.singleQuote = true;
         }
     }
 
@@ -53,21 +53,22 @@ resolveConfig.resolve = (stylelintConfig) => {
         const indentation = rules.indentation[0];
 
         if (indentation === 'tab') {
-            prettierConfig.useTabs = true;
-            prettierConfig.tabWidth = 2;
+            prettierOptions.useTabs = true;
+            prettierOptions.tabWidth = 2;
         } else {
-            prettierConfig.useTabs = false;
-            prettierConfig.tabWidth = indentation;
+            prettierOptions.useTabs = false;
+            prettierOptions.tabWidth = indentation;
         }
     }
-    prettierConfig.parser = 'postcss';
-    debug('prettier %O', prettierConfig);
+    prettierOptions.parser = 'postcss';
+    debug('prettier %O', prettierOptions);
     debug('linter %O', stylelintConfig);
 
-    return [prettierConfig, stylelintConfig];
+    return [prettierOptions, stylelintConfig];
 };
 
-function stylelinter(code, filePath) {
+function stylelinter(code, { filePath, stylelintPath }) {
+    const stylelint = requireRelative(stylelintPath, filePath, 'stylelint');
     const linterAPI = stylelint.createLinter({ fix: true });
 
     return linterAPI
@@ -82,18 +83,53 @@ function stylelinter(code, filePath) {
         });
 }
 
-function format(options) {
-    const { filePath = '', text } = options;
+function requireRelative(path, filePath, packageName) {
+    try {
+        if (path) {
+            return require(resolveFrom(path, packageName));
+        }
 
-    return resolveConfig(filePath, options).then(([prettierConfig]) =>
-        stylelinter(
-            prettier.format(text, prettierConfig),
-            path.isAbsolute(filePath) ?
-                filePath :
-                path.resolve(process.cwd(), filePath)
-        )
+        return require(resolveFrom(filePath, packageName));
+    } catch (err) {
+        return require(packageName);
+    }
+}
+
+function getPrettierConfig(filePath, prettierPath) {
+    const prettier = requireRelative(prettierPath, filePath, 'prettier');
+
+    // NOTE: Backward-compatibility with old prettier versions (<1.7)
+    //       that don't have ``resolveConfig.sync` method.
+    return typeof prettier.resolveConfig.sync === 'undefined' ?
+        {} :
+        prettier.resolveConfig.sync(filePath);
+}
+
+function format({
+    filePath = '',
+    text = fs.readFileSync(filePath, 'utf8'),
+    prettierPath,
+    stylelintPath,
+    prettierOptions = getPrettierConfig(filePath, prettierPath),
+    stylelintConfig
+}) {
+    const options = {
+        filePath: path.isAbsolute(filePath) ?
+            filePath :
+            path.resolve(process.cwd(), filePath),
+        text,
+        prettierPath,
+        stylelintPath,
+        stylelintConfig,
+        prettierOptions
+    };
+    const prettier = requireRelative(prettierPath, filePath, 'prettier');
+
+    return resolveConfig(options).then(([prettierConfig]) =>
+        stylelinter(prettier.format(text, prettierConfig), options)
     );
 }
 
 exports.format = format;
 exports.resolveConfig = resolveConfig;
+exports.getPrettierConfig = getPrettierConfig;

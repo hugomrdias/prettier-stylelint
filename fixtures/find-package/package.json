@@ -1,0 +1,11 @@
+{
+    "name": "prettier-stylelint",
+    "version": "0.3.0",
+    "description": "code > prettier > stylelint > formatted code",
+    "author": "Hugo Dias <mail@hugodias.me> (http://hugodias.me/)",
+    "license": "MIT",
+    "dependencies": {
+        "prettier": "1.6.0",
+        "stylelint": "8.0.0"
+    }
+}
