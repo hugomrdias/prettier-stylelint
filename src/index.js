@@ -17,11 +17,22 @@ function resolveConfig({
     filePath,
     stylelintPath,
     stylelintConfig,
-    prettierOptions
+    prettierOptions = {}
 }) {
     const resolve = resolveConfig.resolve;
     const stylelint = requireRelative(stylelintPath, filePath, 'stylelint');
     const linterAPI = stylelint.createLinter();
+
+    if (!prettierOptions.parser && filePath) {
+        const arrayFromFilePath = filePath.split('.');
+        const parser = arrayFromFilePath[arrayFromFilePath.length - 1];
+
+        if (['scss', 'less', 'css'].includes(parser)) {
+            // console.log(`Unknow type: ${parser}, Set prettier parser into default value 'css' `);
+            prettierOptions.parser = 'css';
+        }
+        prettierOptions.parser = parser;
+    }
 
     if (stylelintConfig) {
         return Promise.resolve(resolve(stylelintConfig, prettierOptions));
@@ -60,16 +71,19 @@ resolveConfig.resolve = (stylelintConfig, prettierOptions = {}) => {
             prettierOptions.tabWidth = indentation;
         }
     }
-    prettierOptions.parser = 'postcss';
     debug('prettier %O', prettierOptions);
     debug('linter %O', stylelintConfig);
 
     return [prettierOptions, stylelintConfig];
 };
 
-function stylelinter(code, { filePath, stylelintPath }) {
+function stylelinter(code, { filePath, stylelintPath, configBasedir, stylelintConfig: config }) {
     const stylelint = requireRelative(stylelintPath, filePath, 'stylelint');
-    const linterAPI = stylelint.createLinter({ fix: true });
+    const linterAPI = stylelint.createLinter({
+        config,
+        configBasedir,
+        fix: true
+    });
 
     return linterAPI
         ._lintSource({
@@ -102,7 +116,7 @@ function getPrettierConfig(filePath, prettierPath) {
     //       that don't have ``resolveConfig.sync` method.
     return typeof prettier.resolveConfig.sync === 'undefined' ?
         {} :
-        prettier.resolveConfig.sync(filePath);
+        prettier.resolveConfig.sync(filePath) || {};
 }
 
 function format({
@@ -111,7 +125,8 @@ function format({
     prettierPath,
     stylelintPath,
     prettierOptions = getPrettierConfig(filePath, prettierPath),
-    stylelintConfig
+    stylelintConfig,
+    configBasedir
 }) {
     const options = {
         filePath: path.isAbsolute(filePath) ?
@@ -121,7 +136,8 @@ function format({
         prettierPath,
         stylelintPath,
         stylelintConfig,
-        prettierOptions
+        prettierOptions,
+        configBasedir
     };
     const prettier = requireRelative(prettierPath, filePath, 'prettier');
 

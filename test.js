@@ -224,11 +224,11 @@ test('resolve relative package deep', (t) => {
 test('resolve relative package fallback', (t) => {
     const path = resolveFrom('./fixtures/style.css', 'prettier');
 
-    t.is('1.7.0', require(path).version);
+    t.is('1.7.4', require(path).version);
 });
 
 test('resolve relative package null', (t) => {
     const path = resolveFrom(__filename, 'prettier');
 
-    t.is('1.7.0', require(path).version);
+    t.is('1.7.4', require(path).version);
 });
