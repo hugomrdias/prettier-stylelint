@@ -50,7 +50,7 @@
         "import-local": "^0.1.1",
         "meow": "^3.7.0",
         "pify": "^3.0.0",
-        "prettier": "^1.7.0",
+        "prettier": "^1.8.1",
         "resolve-from": "^4.0.0",
         "stylelint": "^8.1.1",
         "temp-write": "^3.3.0",
