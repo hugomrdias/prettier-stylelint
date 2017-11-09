@@ -5,7 +5,7 @@ const path = require('path');
 const debug = require('debug')('prettier-stylelint:utils');
 const ignore = require('ignore');
 
-exports.arrify = function(val) {
+exports.arrify = function (val) {
     if (val === null || val === undefined) {
         return [];
     }
@@ -13,21 +13,22 @@ exports.arrify = function(val) {
     return Array.isArray(val) ? val : [val];
 };
 
-exports.ignore = function(paths, options) {
+exports.ignore = function (paths, options) {
     const ignorer = ignore();
-    const gitignore = path.resolve(options.cwd, '.gitignore');
-    const prettierignore = path.resolve(options.cwd, '.prettierignore');
+    const files = {
+        gitignore: path.resolve(options.cwd, '.gitignore'),
+        prettierignore: path.resolve(options.cwd, '.prettierignore'),
+        stylelintignore: path.resolve(options.cwd, '.stylelintignore')
+    };
 
-    try {
-        ignorer.add(fs.readFileSync(gitignore, 'utf8').toString());
-    } catch (err) {
-        debug('.gitignore error', err.message);
-    }
+    for (const key in files) {
+        if (!files.hasOwnProperty(key)) return;
 
-    try {
-        ignorer.add(fs.readFileSync(prettierignore, 'utf8').toString());
-    } catch (err) {
-        debug('.prettierignore error', err.message);
+        try {
+            ignorer.add(fs.readFileSync(files[key], 'utf8').toString());
+        } catch (err) {
+            debug(`.${key} error`, err.message);
+        }
     }
 
     paths = ignorer.filter(paths);
