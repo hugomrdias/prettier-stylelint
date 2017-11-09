@@ -1,7 +1,7 @@
 # prettier-stylelint [![NPM Version](https://img.shields.io/npm/v/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM Downloads](https://img.shields.io/npm/dt/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![NPM License](https://img.shields.io/npm/l/prettier-stylelint.svg)](https://www.npmjs.com/package/prettier-stylelint) [![Build Status](https://travis-ci.org/hugomrdias/prettier-stylelint.svg?branch=master)](https://travis-ci.org/hugomrdias/prettier-stylelint) [![codecov](https://codecov.io/gh/hugomrdias/prettier-stylelint/branch/master/graph/badge.svg)](https://codecov.io/gh/hugomrdias/prettier-stylelint)
 > Format your styles with ease!
 
-code > prettier > stylelint > formatted code   
+code > prettier > stylelint > formatted code
 
 prettier-stylelint attempts to create a prettier config based on the stylelint config, then format with prettier followed by stylelint --fix. So after that you should end up with formatted code with no linting errors.
 
@@ -30,7 +30,7 @@ This package has a stylelint config to disable some rules that conflict with pre
 
 ```
 
-After adding the disabling config you can just `prettier-stylelint --write` and its done. Check the CLI options below for more information.   
+After adding the disabling config you can just `prettier-stylelint --write` and its done. Check the CLI options below for more information.
 Also in a near future we should have support for prettier-stylelint in `prettier-vscode` follow this [PR](https://github.com/prettier/prettier-vscode/pull/218).
 
 
@@ -44,15 +44,15 @@ const options = {
 const formatted = format(options)
 
 
-// formatted 
+// formatted
 a[id='foo'] {
     content: 'x';
 }
-```   
+```
 
 ### CLI Options
 
-The cli automatically ignores `.gitignore` and `.prettierignore`.
+The cli automatically ignores `.gitignore`, `.stylelintignore` and `.prettierignore`.
 
 >**NOTE:** It is recommended that you keep your files under source control and committed
 > before running `prettier-stylelint --write` as it will overwrite your files!
