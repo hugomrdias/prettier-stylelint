@@ -60,7 +60,7 @@ resolveConfig.resolve = (stylelintConfig, prettierOptions = {}) => {
             prettierOptions.tabWidth = indentation;
         }
     }
-    prettierOptions.parser = 'postcss';
+
     debug('prettier %O', prettierOptions);
     debug('linter %O', stylelintConfig);
 
