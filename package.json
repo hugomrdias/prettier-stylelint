@@ -19,13 +19,13 @@
         "check"
     ],
     "scripts": {
-        "test": "nyc ava",
-        "lint": "eslint --cache *.js src/*.js",
-        "precommit": "run-p lint test",
-        "version": "yarn changelog && git add CHANGELOG.md",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "cov": "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
         "cov:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+        "lint": "eslint --cache *.js src/*.js",
+        "precommit": "run-p lint test",
+        "test": "nyc ava",
+        "version": "yarn changelog && git add CHANGELOG.md"
     },
     "devDependencies": {
         "ava": "^0.22.0",
