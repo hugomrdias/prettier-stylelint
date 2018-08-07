@@ -22,7 +22,7 @@
         "test": "nyc ava",
         "lint": "eslint --cache *.js src/*.js",
         "validate": "run-p lint test",
-        "precommit": "yarn validate",
+        "precommit": "run-p lint test",
         "version": "yarn changelog && git add CHANGELOG.md",
         "cov": "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
         "cov:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
