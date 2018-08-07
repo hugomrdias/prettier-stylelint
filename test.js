@@ -80,6 +80,9 @@ test('resolveConfig prettier merge', t =>
         return config;
     }));
 
+test('resolve config with null prettierOptions', t =>
+    t.notThrows(() => resolveConfig.resolve({ rules: { indentation: ['tab'] } }, null)));
+
 test('format', (t) => {
     const source = fs.readFileSync('./fixtures/style.css', 'utf8');
 
