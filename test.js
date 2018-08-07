@@ -197,7 +197,7 @@ test('alternate stylelint format', (t) => {
 
 
 
-a[id="foo"] { content: "x"; }
+a[id='foo'] { content: 'x'; }
 `
             );
 
