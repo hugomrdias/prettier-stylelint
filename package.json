@@ -23,7 +23,7 @@
         "cov": "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
         "cov:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
         "lint": "eslint --cache *.js src/*.js",
-        "test": "nyc ava",
+        "test": "yarn lint && nyc ava",
         "version": "yarn changelog && git add CHANGELOG.md"
     },
     "devDependencies": {
