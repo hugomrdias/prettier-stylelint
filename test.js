@@ -4,7 +4,6 @@ const fs = require('fs');
 const test = require('ava');
 const tempWrite = require('temp-write');
 const stylelint = require('stylelint');
-const resolveFrom = require('resolve-from');
 const { format, resolveConfig, getPrettierConfig } = require('./index');
 
 const linterAPI = stylelint.createLinter({ fix: true });
@@ -80,6 +79,9 @@ test('resolveConfig prettier merge', t =>
 
         return config;
     }));
+
+test('resolve config with null prettierOptions', t =>
+    t.notThrows(() => resolveConfig.resolve({ rules: { indentation: ['tab'] } }, null)));
 
 test('format', (t) => {
     const source = fs.readFileSync('./fixtures/style.css', 'utf8');
@@ -198,7 +200,7 @@ test('alternate stylelint format', (t) => {
 
 
 
-a[id="foo"] { content: "x"; }
+a[id='foo'] { content: 'x'; }
 `
             );
 
@@ -206,29 +208,3 @@ a[id="foo"] { content: "x"; }
         });
 });
 
-test('resolve relative package', (t) => {
-    const path = resolveFrom('./fixtures/find-package/style.css', 'prettier');
-
-    t.is('1.6.0', require(path).version);
-});
-
-test('resolve relative package deep', (t) => {
-    const path = resolveFrom(
-        './fixtures/find-package/deep/style.css',
-        'prettier'
-    );
-
-    t.is('1.6.0', require(path).version);
-});
-
-test('resolve relative package fallback', (t) => {
-    const path = resolveFrom('./fixtures/style.css', 'prettier');
-
-    t.is('1.7.0', require(path).version);
-});
-
-test('resolve relative package null', (t) => {
-    const path = resolveFrom(__filename, 'prettier');
-
-    t.is('1.7.0', require(path).version);
-});

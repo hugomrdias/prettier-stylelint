@@ -32,39 +32,39 @@ function resolveConfig({
         .then(({ config }) => resolve(config, prettierOptions));
 }
 
-resolveConfig.resolve = (stylelintConfig, prettierOptions = {}) => {
+resolveConfig.resolve = (stylelintConfig, prettierOptions) => {
     const { rules } = stylelintConfig;
+    const fromRule = rule => rules[rule][0];
+    const implicitOptions = {};
 
     if (rules['max-line-length']) {
-        const printWidth = rules['max-line-length'][0];
-
-        prettierOptions.printWidth = printWidth;
+        implicitOptions.printWidth = fromRule('max-line-length');
     }
 
-    if (rules['string-quotes']) {
-        const quotes = rules['string-quotes'][0];
-
-        if (quotes === 'single') {
-            prettierOptions.singleQuote = true;
-        }
+    if (rules['string-quotes'] && fromRule('string-quotes') === 'single') {
+        implicitOptions.singleQuote = true;
     }
 
     if (rules.indentation) {
-        const indentation = rules.indentation[0];
+        const indentation = fromRule('indentation');
 
         if (indentation === 'tab') {
-            prettierOptions.useTabs = true;
-            prettierOptions.tabWidth = 2;
+            implicitOptions.useTabs = true;
+            implicitOptions.tabWidth = 2;
         } else {
-            prettierOptions.useTabs = false;
-            prettierOptions.tabWidth = indentation;
+            implicitOptions.useTabs = false;
+            implicitOptions.tabWidth = indentation;
         }
     }
-    prettierOptions.parser = 'postcss';
-    debug('prettier %O', prettierOptions);
+
+    implicitOptions.parser = 'postcss';
+
+    const options = Object.assign({}, prettierOptions, implicitOptions);
+
+    debug('prettier %O', options);
     debug('linter %O', stylelintConfig);
 
-    return [prettierOptions, stylelintConfig];
+    return [options, stylelintConfig];
 };
 
 function stylelinter(code, { filePath, stylelintPath }) {

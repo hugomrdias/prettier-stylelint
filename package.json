@@ -19,14 +19,12 @@
         "check"
     ],
     "scripts": {
-        "test": "nyc ava",
-        "lint": "eslint --cache *.js src/*.js",
-        "validate": "run-p lint test",
-        "precommit": "yarn validate",
-        "version": "yarn changelog && git add CHANGELOG.md",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
         "cov": "yarn test && nyc report --reporter=html && hs coverage -s -o -c-1",
         "cov:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+        "lint": "eslint --cache *.js src/*.js",
+        "test": "yarn lint && nyc ava",
+        "version": "yarn changelog && git add CHANGELOG.md"
     },
     "devDependencies": {
         "ava": "^0.22.0",
@@ -35,11 +33,10 @@
         "eslint": "^4.7.1",
         "eslint-config-halo": "^2.4.1",
         "http-serve": "^1.0.1",
-        "husky": "^0.14.3",
         "np": "^2.16.0",
         "npm-run-all": "^4.1.1",
         "nyc": "^11.2.1",
-        "stylelint-config-recommended": "^1.0.0"
+        "stylelint-config-recommended": "^2.1.0"
     },
     "dependencies": {
         "cosmiconfig": "^3.0.1",
@@ -52,7 +49,7 @@
         "pify": "^3.0.0",
         "prettier": "^1.7.0",
         "resolve-from": "^4.0.0",
-        "stylelint": "^8.1.1",
+        "stylelint": "^9.4.0",
         "temp-write": "^3.3.0",
         "tempy": "^0.2.1",
         "update-notifier": "^2.2.0"
