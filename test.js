@@ -136,7 +136,7 @@ test('format less', (t) => {
     }).then((source) => {
         t.is(
             source,
-            `@base: #F938AB;
+            `@base: #f938ab;
 
 .box-shadow(@style, @c) when (iscolor(@c)) {
     -webkit-box-shadow: @style @c;
@@ -198,7 +198,7 @@ test('alternate stylelint format', (t) => {
 
 
 
-a[id="foo"] { content: "x"; }
+a[id='foo'] { content: 'x'; }
 `
             );
 
