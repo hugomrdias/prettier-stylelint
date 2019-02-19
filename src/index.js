@@ -35,6 +35,10 @@ function resolveConfig({
 resolveConfig.resolve = (stylelintConfig, prettierOptions = {}) => {
     const { rules } = stylelintConfig;
 
+    if (prettierOptions === null) {
+        prettierOptions = {};
+    }
+
     if (rules['max-line-length']) {
         const printWidth = rules['max-line-length'][0];
 
