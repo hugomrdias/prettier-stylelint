@@ -36,7 +36,7 @@ Also in a near future we should have support for prettier-stylelint in `prettier
 
 ### API
 ```js
-const format = require('prettier-eslint')
+const format = require('prettier-stylelint')
 const sourceCode = 'a[id="foo"] { content: "x"; }'
 const options = {
   text: sourceCode
